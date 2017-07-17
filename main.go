@@ -1,34 +1,52 @@
 package main
 
 import (
+	"github.com/PuerkitoBio/goquery"
 	"log"
-	"github.com/mmcdole/gofeed"
-	"net/http"
-	"io"
+	"strings"
+	"github.com/go-redis/redis"
 )
 
 func main() {
-	http.HandleFunc("/", display)
 
-	err := http.ListenAndServe(":8000", nil)
-	if err != nil {
-		log.Println("Error in ListenAndServe: ", err)
+	type Config struct {
+		Interest string
+		URL string
 	}
+
+	config := Config{
+		URL: "http://serious-science.org/alcoholism-7561",
+		Interest: "alcoholism",
+	}
+
+	log.Println("Config: ", config)
+
+	response, err := goquery.NewDocument(config.URL)
+
+	if err != nil {
+		panic("Bad URL!")
+	}
+
+	article := ""
+
+	response.Find("p").Each(func(index int, item *goquery.Selection) {
+		line := item.Text()
+		article += line
+	})
+
+	log.Println(strings.Contains(article, config.Interest))
+
+	log.Println("Redis:", Redis())
 }
 
-func display(w http.ResponseWriter, r*http.Request) {
-	parse := gofeed.NewParser()
+func Redis() string {
+	client := redis.NewClient(&redis.Options{
+		Addr: "localhost:6379",
+		Password: "",
+		DB: 0,
+	})
 
-	var url string = "https://pub.scotch.io/feed"
-	feed, err := parse.ParseURL(url)
-	if err != nil {
-		log.Println("Error in ParseURL: ", err)
-	}
+	pong, _ := client.Ping().Result()
 
-	io.WriteString(w, feed.Title + " - " + feed.Description)
-
-	for i:=0; i<=len(feed.Items) - 1;i++{
-		io.WriteString(w, feed.Items[i].Title)
-	}
+	return pong
 }
-
