@@ -1,52 +1,25 @@
 package main
 
 import (
-	"github.com/PuerkitoBio/goquery"
 	"log"
-	"strings"
-	"github.com/go-redis/redis"
+	"github.com/yevchuk-kostiantyn/WebsiteAggregator/models"
+	"github.com/yevchuk-kostiantyn/WebsiteAggregator/articles"
+	"sync"
 )
 
 func main() {
 
-	type Config struct {
-		Interest string
-		URL string
-	}
+	wg := sync.WaitGroup{}
 
-	config := Config{
-		URL: "http://serious-science.org/alcoholism-7561",
+	wg.Add(1)
+	config := models.Config{
+		URL:      "http://serious-science.org/alcoholism-7561",
 		Interest: "alcoholism",
 	}
 
 	log.Println("Config: ", config)
 
-	response, err := goquery.NewDocument(config.URL)
-
-	if err != nil {
-		panic("Bad URL!")
-	}
-
-	article := ""
-
-	response.Find("p").Each(func(index int, item *goquery.Selection) {
-		line := item.Text()
-		article += line
-	})
-
-	log.Println(strings.Contains(article, config.Interest))
-
-	log.Println("Redis:", Redis())
-}
-
-func Redis() string {
-	client := redis.NewClient(&redis.Options{
-		Addr: "localhost:6379",
-		Password: "",
-		DB: 0,
-	})
-
-	pong, _ := client.Ping().Result()
-
-	return pong
+	articles.Search(&config)
+	go articles.RunDynamicServer()
+	wg.Wait()
 }

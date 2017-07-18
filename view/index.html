@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Article Finder</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato: 100,300,400,700|Luckiest+Guy|Oxygen:300,400" rel="stylesheet">
+  <link href="style.css" type="text/css" rel="stylesheet">
+    <meta charset="utf-8">
+    <title>Products</title>
+    <script src = "jquery.js"></script>
+    <script src = "Main.js" async></script>
+</head>
+<body>
+
+<p><a name="Shopping"/></p>
+ <div class="products">
+  <p><a name="store"/></p>
+    
+
+<table>
+    <thead>
+      <tr>
+          <th>Search</th>
+          <th>Pick</th>
+
+      </tr>
+    </thead>
+<tr>
+        <td>
+        <p>Enter URL:</p>
+        <input type="text" id="new_URL" />
+            <p>Enter interest:</p>
+            <input type="text" id="new_interest"/>
+            <button type="button" class="btn btn-success" id="updateBtn">Update</button>
+        </td>
+
+        <td>
+          <input type="checkbox" id="charA" value="Ноутбук" />Ноутбуки
+            <input type="checkbox" id="charB" value="Видеокарта" />Видеокарты
+            <input type="checkbox" id="charC" value="Монитор" />Мониторы
+            <input type="checkbox" id="charD" value="Мышь" />Мышь
+            <input type="checkbox" id="charE" value="Блендер" />Блендеры
+        </td>
+</tr>
+</table>
+
+<table>
+    <thead id="headings">
+      <tr>
+          <th id = "interest">Interest</th>
+          <th id = "URL">URL</th>
+          <th id = "Article">Article</th>
+      </tr>
+
+    </thead>
+    <tbody id = "results">
+      <!-- this will auto-filled -->
+    </tbody>
+</table>
+
+<!--<script src="filters.js"></script>-->
+<!--<script>-->
+  <!--filterTable( document.getElementById("results"), {-->
+
+        <!--/* Search filter */-->
+            <!--0: document.getElementById("text"),-->
+
+            <!--/* Check-box filter */-->
+            <!--1: new filterTable.Filter([ /* Filter Elements */-->
+                    <!--document.getElementById("charA"),-->
+                    <!--document.getElementById("charB"),-->
+                    <!--document.getElementById("charC"),-->
+                    <!--document.getElementById("charD"),-->
+                    <!--document.getElementById("charE"),-->
+                <!--],-->
+                <!--/* Validation function */-->
+                <!--function (value, filters, i) {-->
+                    <!--/* If checkbox is not selected */-->
+                    <!--if (false === filters[i].checked) return true;-->
+                    <!--/* Check all values under specific value of selected checkbox */-->
+                    <!--return filters[0].checked && filters[0].value === value ||-->
+                            <!--filters[1].checked && filters[1].value === value ||-->
+                            <!--filters[2].checked && filters[2].value === value ||-->
+                            <!--filters[3].checked && filters[3].value === value ||-->
+                            <!--filters[4].checked && filters[4].value === value;-->
+                <!--}-->
+            <!--),-->
+        <!--}-->
+    <!--);-->
+<!--</script>-->
+  <div class="products">
+  </form>
+</div>
+</div>
+ </div>
+</body>
+</html>
