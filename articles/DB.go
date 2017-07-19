@@ -29,7 +29,7 @@ func SaveToDB(key string, article string) {
 }
 
 func getAllArticles(client *redis.Client) []models.Article {
-	var article1 models.Article
+	var article models.Article
 	var articles []models.Article
 
 	interestsArticles, err := client.SMembers("interestsArticles")
@@ -43,18 +43,20 @@ func getAllArticles(client *redis.Client) []models.Article {
 		interestsArticlesTokens[i] = strings.Split(k, "|")
 	}
 
-	log.Println(interestsArticlesTokens)
 	for _, key := range interestsArticlesTokens {
-
-		article1.Interest = key[0]
-		article1.URL = key[1]
-		article1.Text, err = client.HGet(article1.Interest+"|"+article1.URL, "article")
+		log.Println("Key: ", key)
+		article.Interest = key[0]
+		article.URL = key[1]
+		article.Text, err = client.HGet(article.Interest+"|"+article.URL, "article")
 		if err != nil {
 			log.Println("Error HGet(): ", err)
 		}
+
+		articles = append(articles, article)
 	}
 
-	articles = append(articles, article1)
+
+
 	return articles
 }
 

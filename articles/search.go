@@ -7,22 +7,23 @@ import (
 	"github.com/yevchuk-kostiantyn/WebsiteAggregator/models"
 )
 
-func Search(config *models.Config) {
+func Search(config *models.RequestArticle) {
 	response, err := goquery.NewDocument(config.URL)
 
+	log.Println("New Search", config)
 	if err != nil {
 		panic("Bad URL!")
 	}
 
 	article := ""
-	response.Find("p").Each(func(index int, item *goquery.Selection) {
+	response.Find("body").Each(func(index int, item *goquery.Selection) {
 		line := item.Text()
 		article += line
 	})
 
 	if IsInteresting(article, config.Interest) {
 		key := config.Interest + "|" + config.URL
-
+		log.Println("Interesting!")
 		SaveToDB(key, article)
 	} else {
 		log.Println("Not interesting")

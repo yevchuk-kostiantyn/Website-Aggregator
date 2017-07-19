@@ -1,27 +1,6 @@
-function parseURLParams(url) {
-    var queryStart = url.indexOf("?") + 1,
-        queryEnd = url.indexOf("#") + 1 || url.length + 1,
-        query = url.slice(queryStart, queryEnd - 1),
-        pairs = query.replace(/\+/g, " ").split("&"),
-        parms = {}, i, n, v, nv;
-
-    if (query === url || query === "") return;
-
-    for (i = 0; i < pairs.length; i++) {
-        nv = pairs[i].split("=", 2);
-        n = decodeURIComponent(nv[0]);
-        v = decodeURIComponent(nv[1]);
-
-        if (!parms.hasOwnProperty(n)) parms[n] = [];
-        parms[n].push(nv.length === 2 ? v : null);
-    }
-    return parms;
-}
-
 function sendConfiguration(URL, interest) {
     var xhr = new XMLHttpRequest();
-    requestHandler(id, xhr);
-
+    requestHandler(xhr);
     var config = JSON.stringify(
         {
             "URL": URL,
@@ -29,10 +8,11 @@ function sendConfiguration(URL, interest) {
         });
 
     xhr.send(config);
+    console.dir(config);
 }
 
-function requestHandler(id, xhr) {
-    var url = "/devices/" + id + "/config";
+function requestHandler(xhr) {
+    var url = "/patch";
     xhr.open("PATCH", url, true);
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
@@ -45,29 +25,62 @@ function requestHandler(id, xhr) {
     };
 }
 
-var json = [ {Name: "Asus PU301LA",			          Type: "Ноутбук",	  Price: 1000,  Id: "id7531", Picture: "http://www.foxtrot.com.ua/files/MediumImages/6180148/0.jpg"},
-				     {Name: "Dell Inspiron 5749",		      Type: "Ноутбук",	  Price: 21000, Id: "id7532", Picture: "http://www.laptopworld.com.pk/media/catalog/product/cache/1/small_image/295x295/9df78eab33525d08d6e5fb8d27136e95/o/p/open_box_dell_inspiron_5749_silver__1_1.jpg"},
-				     {Name: "MSI PCI-Ex GeForce GTX 960", Type: "Видеокарта", Price: 6000,  Id: "id7533", Picture: "https://dubizar.com/media/catalog/product/cache/1/small_image/295x295/9df78eab33525d08d6e5fb8d27136e95/z/o/zotac-geforce-gtx-960-amp-edition-4gb-zt-90309-10m.jpg"},
-				     {Name: "Dell UltraSharp U2412M",	    Type: "Монитор",	  Price: 7150,  Id: "id7534", Picture: "http://i.dell.com/images/global/products/root/monitor-u2413-front-std-295x295.jpg"},
-				     {Name: "A4Tech Bloody V8MA",		      Type: "Мышь",		    Price: 650,   Id: "id7535", Picture: "https://a4tech.ua/media/catalog/product/cache/14/small_image/295x295/9df78eab33525d08d6e5fb8d27136e95/v/8/v8ma_bloody_01.jpg"},
-  				   {Name: "BOSCH MSM 6B700",			      Type: "Блендер",	  Price: 1299,  Id: "id7536", Picture: "http://megakom.info/media/catalog/product/cache/1/small_image/295x295/9df78eab33525d08d6e5fb8d27136e95/5/6/562358_v01_b_2.jpg"},
-  				   {Name: "HP 255 G3",				          Type: "Ноутбук",    Price: 7100,  Id: "id7537", Picture: "http://phonetrader.ng/buy/media/catalog/product/cache/1/small_image/295x295/9df78eab33525d08d6e5fb8d27136e95/2/5/255_g3.jpg"},
-				     {Name: "Lenovo G40-30",			        Type: "Ноутбук",	  Price: 8000,  Id: "id7538", Picture: "http://phonetrader.ng/buy/media/catalog/product/cache/1/small_image/295x295/9df78eab33525d08d6e5fb8d27136e95/g/4/g40_30.jpg"},
-				     {Name: "Apple MacBook Air 13",	      Type: "Ноутбук",	  Price: 27099, Id: "id7539", Picture: "https://yellow.ua/media/catalog/product/cache/8/small_image/295x295/9df78eab33525d08d6e5fb8d27136e95/a/1/a1370_macbook_air_z0mg000cp_321233879061_1_2.jpg"}
-				    ];
+$(document).ready(function () {
+    $.get("/articles", function (data) {
+        var obj = JSON.parse(data);
+        console.dir(obj);
+        setConfigFields(obj);
+    });
 
-// Decode JSON and paste it to HTML table
-function showResults () {
-    var html = '';
-    for (var e in json) {
+    document.getElementById("updateBtn").onclick = function () {
+        sendConfiguration(
+            document.getElementById('new_URL').value,
+            document.getElementById('new_interest').value
+        );
+    };
+});
+
+function setConfigFields(obj) {
+    var html ='';
+    for (var e in obj) {
         html += '<tr>'
-            +'<td>'+json[e].Name+'</td>'
-            +'<td>'+json[e].Type+'</td>'
-            +'<td>'+json[e].Price+'</td>'
-        +'</tr>';
+            + '<td>' + obj[e]["interest"] + '</td>' // Interest
+            + '<td>' + obj[e]["url"] + '</td>' // URL
+            + '<td>' + obj[e]["text"].substr(0, 70) + " ..."
+            + '<button id="opener">Full Text</button>'
+            + '<div id="dialog" title='+ obj[e]["interest"]+ '>'+obj[e]["text"]+'</div>';
+        $(function () {
+            $("#dialog").dialog({autoOpen: false,
+                maxWidth:600,
+                maxHeight: 500,
+                width: 600,
+                height: 500});
+            $("#opener").click(function () {
+                $("#dialog").dialog("open");
+            });
+        });
     }
     $('#results').html(html);
 }
+
+
+
+    // document.getElementById('URL').value = obj["URL"];
+    // document.getElementById('interest').value = obj["interest"];
+
+
+// Decode JSON and paste it to HTML table
+// function showResults () {
+//     var html = '';
+//     for (var e in json) {
+//         html += '<tr>'
+//             +'<td>'+json[e].Name+'</td>' // Interest
+//             +'<td>'+json[e].Type+'</td>' // URL
+//             +'<td>'+json[e].Price+'</td>' // Article
+//         +'</tr>';
+//     }
+//     $('#results').html(html);
+// }
 
 // Sort
 $(function() {
@@ -84,7 +97,7 @@ $(function() {
         sortResults(id, asc);
     });
         
-    showResults();
+    //showResults();
 });
 
 function sortResults(prop, asc) {
@@ -166,28 +179,4 @@ function show(container, Message) {
     msgElem.className = "output-message";
     msgElem.innerHTML = Message;
     container.appendChild(msgElem);
-}
-
-$(document).ready(function () {
-    var urlParams = parseURLParams(window.location.href);
-
-    // TODO Fix GET Method
-    // $.get("/devices/" + urlParams["id"] + "/config", function (data) {
-    //     var obj = JSON.parse(data);
-    //     setConfigFields(obj);
-    // });
-
-    document.getElementById("updateBtn").onclick = function () {
-        // console.dir(document.getElementById('new_URL').value);
-        // console.dir(document.getElementById('new_interest').value);
-        sendConfiguration(
-            document.getElementById('new_URL').value,
-            document.getElementById('new_interest').value
-        );
-    };
-});
-
-function setConfigFields(obj) {
-    document.getElementById('URL').value = obj["URL"];
-    document.getElementById('interest').value = obj["interest"];
 }

@@ -7,16 +7,17 @@ import (
 	"log"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/yevchuk-kostiantyn/WebsiteAggregator/models"
 )
 
 func RunDynamicServer() {
 	r := mux.NewRouter()
 
+	r.HandleFunc("/articles", getArticlesHandler).Methods("GET")
+	r.HandleFunc("/patch", patchArticlesHandler).Methods("PATCH")
+
 	//provide static html pages
-	//r.PathPrefix("/").Handler(http.FileServer(http.Dir("./view/")))
-	r.HandleFunc("/", getArticlesHandler).Methods("GET")
-	//r.HandleFunc("/", getDevConfigHandler).Methods("GET")
-	//r.HandleFunc("/", patchDevConfigHandler).Methods("PATCH")
+	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./view/")))
 
 	srv := &http.Server{
 		Handler:      r,
@@ -25,7 +26,7 @@ func RunDynamicServer() {
 		ReadTimeout:  15 * time.Second,
 	}
 
-	//CORS provides Cross-Origin Resource Sharing middleware
+	// CORS provides Cross-Origin Resource Sharing middleware
 	http.ListenAndServe("0.0.0.0"+":"+"8100", handlers.CORS()(r))
 
 	go log.Fatal(srv.ListenAndServe())
@@ -34,10 +35,21 @@ func RunDynamicServer() {
 func getArticlesHandler(w http.ResponseWriter, r *http.Request) {
 	client := RunDBConnection()
 	articles := getAllArticles(client)
-	log.Println(articles)
+
 	err := json.NewEncoder(w).Encode(articles)
 
 	if err != nil {
 		log.Println("getArticlesHandler JSON enc", err)
 	}
+}
+
+func patchArticlesHandler(w http.ResponseWriter, r *http.Request) {
+	var article models.RequestArticle
+
+	err := json.NewDecoder(r.Body).Decode(&article)
+	if err != nil{
+		log.Println("Error Decode(): ", err)
+	}
+
+	Search(&article)
 }
