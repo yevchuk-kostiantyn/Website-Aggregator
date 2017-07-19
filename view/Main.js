@@ -43,26 +43,33 @@ $(document).ready(function () {
 function setConfigFields(obj) {
     var html ='';
     for (var e in obj) {
+        var buttonId = "opener"+obj[e]["interest"];
+        var textId = "dialog"+obj[e]["interest"];
+
         html += '<tr>'
             + '<td>' + obj[e]["interest"] + '</td>' // Interest
             + '<td>' + obj[e]["url"] + '</td>' // URL
             + '<td>' + obj[e]["text"].substr(0, 70) + " ..."
-            + '<button id="opener">Full Text</button>'
-            + '<div id="dialog" title='+ obj[e]["interest"]+ '>'+obj[e]["text"]+'</div>';
-        $(function () {
-            $("#dialog").dialog({autoOpen: false,
-                maxWidth:600,
-                maxHeight: 500,
-                width: 600,
-                height: 500});
-            $("#opener").click(function () {
-                $("#dialog").dialog("open");
-            });
-        });
+            + '<button class="opener">Full Text</button>'
+            + '<div class="dialog" title='+ obj[e]["interest"]+ '>'+obj[e]["text"]+'</div>';
     }
+    jQuery(function($) {
+        $('.opener').each(function() {
+            $.data(this, 'dialog',
+                $(this).next('.dialog').dialog({autoOpen: false,
+                    maxWidth:600,
+                    maxHeight: 500,
+                    width: 600,
+                    height: 500
+                })
+            );
+        }).click(function() {
+            $.data(this, 'dialog').dialog('open');
+            return false;
+        });
+    });
     $('#results').html(html);
 }
-
 
 
     // document.getElementById('URL').value = obj["URL"];

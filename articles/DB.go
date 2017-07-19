@@ -54,9 +54,5 @@ func getAllArticles(client *redis.Client) []models.Article {
 
 		articles = append(articles, article)
 	}
-
-
-
 	return articles
 }
-
