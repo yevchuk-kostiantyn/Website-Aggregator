@@ -51,5 +51,10 @@ func patchArticlesHandler(w http.ResponseWriter, r *http.Request) {
 		log.Println("Error Decode(): ", err)
 	}
 
+	defer func() {
+		if r := recover(); r != nil {
+			log.Println(r)
+		}
+	}()
 	Search(&article)
 }

@@ -13,10 +13,7 @@
 </head>
 <body>
 
-<p><a name="Shopping"/></p>
  <div class="products">
-  <p><a name="store"/></p>
-    
 
 <table>
     <thead>
@@ -34,22 +31,17 @@
             <input type="text" id="new_interest"/>
             <button type="button" class="btn btn-success" id="updateBtn">Update</button>
         </td>
-
         <td>
-          <input type="checkbox" id="charA" value="Ноутбук" />Ноутбуки
-            <input type="checkbox" id="charB" value="Видеокарта" />Видеокарты
-            <input type="checkbox" id="charC" value="Монитор" />Мониторы
-            <input type="checkbox" id="charD" value="Мышь" />Мышь
-            <input type="checkbox" id="charE" value="Блендер" />Блендеры
+            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
         </td>
 </tr>
 </table>
 
-<table>
+<table id="myTable">
     <thead id="headings">
       <tr>
-          <th id = "Interest">Interest</th>
-          <th id = "URL">URL</th>
+          <th onclick="sortTable(0)" id = "Interest">Interest</th>
+          <th onclick="sortTable(1)" id = "URL">URL</th>
           <th id = "Article">Article</th>
       </tr>
 
@@ -59,36 +51,36 @@
     </tbody>
 </table>
 
-<!--<script src="filters.js"></script>-->
-<!--<script>-->
-  <!--filterTable( document.getElementById("results"), {-->
+<script src="filters.js"></script>
+<script>
+  filterTable( document.getElementById("results"), {
 
-        <!--/* Search filter */-->
-            <!--0: document.getElementById("text"),-->
+        /* Search filter */
+            0: document.getElementById("text"),
 
-            <!--/* Check-box filter */-->
-            <!--1: new filterTable.Filter([ /* Filter Elements */-->
-                    <!--document.getElementById("charA"),-->
-                    <!--document.getElementById("charB"),-->
-                    <!--document.getElementById("charC"),-->
-                    <!--document.getElementById("charD"),-->
-                    <!--document.getElementById("charE"),-->
-                <!--],-->
-                <!--/* Validation function */-->
-                <!--function (value, filters, i) {-->
-                    <!--/* If checkbox is not selected */-->
-                    <!--if (false === filters[i].checked) return true;-->
-                    <!--/* Check all values under specific value of selected checkbox */-->
-                    <!--return filters[0].checked && filters[0].value === value ||-->
-                            <!--filters[1].checked && filters[1].value === value ||-->
-                            <!--filters[2].checked && filters[2].value === value ||-->
-                            <!--filters[3].checked && filters[3].value === value ||-->
-                            <!--filters[4].checked && filters[4].value === value;-->
-                <!--}-->
-            <!--),-->
-        <!--}-->
-    <!--);-->
-<!--</script>-->
+            /* Check-box filter */
+            1: new filterTable.Filter([ /* Filter Elements */
+                    document.getElementById("charA"),
+                    document.getElementById("charB"),
+                    document.getElementById("charC"),
+                    document.getElementById("charD"),
+                    document.getElementById("charE")
+                ],
+                /* Validation function */
+                function (value, filters, i) {
+                    /* If checkbox is not selected */
+                    if (false === filters[i].checked) return true;
+                    /* Check all values under specific value of selected checkbox */
+                    return filters[0].checked && filters[0].value === value ||
+                            filters[1].checked && filters[1].value === value ||
+                            filters[2].checked && filters[2].value === value ||
+                            filters[3].checked && filters[3].value === value ||
+                            filters[4].checked && filters[4].value === value;
+                }
+            ),
+        }
+    );
+</script>
   <div class="products">
   </form>
 </div>

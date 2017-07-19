@@ -30,6 +30,7 @@ $(document).ready(function () {
         var obj = JSON.parse(data);
         console.dir(obj);
         setConfigFields(obj);
+        setCheckBoxes(obj);
     });
 
     document.getElementById("updateBtn").onclick = function () {
@@ -43,9 +44,6 @@ $(document).ready(function () {
 function setConfigFields(obj) {
     var html ='';
     for (var e in obj) {
-        var buttonId = "opener"+obj[e]["interest"];
-        var textId = "dialog"+obj[e]["interest"];
-
         html += '<tr>'
             + '<td>' + obj[e]["interest"] + '</td>' // Interest
             + '<td>' + obj[e]["url"] + '</td>' // URL
@@ -71,114 +69,53 @@ function setConfigFields(obj) {
     $('#results').html(html);
 }
 
-
-    // document.getElementById('URL').value = obj["URL"];
-    // document.getElementById('interest').value = obj["interest"];
-
-
-// Decode JSON and paste it to HTML table
-// function showResults () {
-//     var html = '';
-//     for (var e in json) {
-//         html += '<tr>'
-//             +'<td>'+json[e].Name+'</td>' // Interest
-//             +'<td>'+json[e].Type+'</td>' // URL
-//             +'<td>'+json[e].Price+'</td>' // Article
-//         +'</tr>';
-//     }
-//     $('#results').html(html);
-// }
-
-// Sort
-$(function() {
-    $('#headings th').click(function() {
-        var id = $(this).attr('id');
-        var asc = (!$(this).attr('asc')); // switch the order, true if not set
-        
-        // set asc="asc" when sorted in ascending order
-        $('#headings th').each(function() {
-            $(this).removeAttr('asc');
-        });
-        if (asc) $(this).attr('asc', 'asc');
-        
-        sortResults(id, asc);
-    });
-        
-    //showResults();
-});
-
-function sortResults(prop, asc) {
-    json = json.sort(function(a, b) {
-        if (asc) return (a[prop] > b[prop]);
-        else return (b[prop] > a[prop]);
-    });
-    showResults();
+function setCheckBoxes(obj) {
+    var html = '';
+    for (var e in obj) {
+        var charId = "char"+obj[e]["interest"];
+        var interestValue = obj[e]["interest"];
+        html += '<input type="checkbox" id='+ charId+ 'value=' + interestValue +  '/>'+interestValue;
+    }
+    $('#checkboxes').html(html);
 }
 
-// Filters
-var filterTable = function (HTMLTBodyRef, aFilters) {
-    var rows = HTMLTBodyRef.getElementsByTagName("TR"),
-        filters = {}, n,
-        walkThrough = function (rows) {
-            var tr, i, f;
-            for (i = 0; i < rows.length; i += 1) {
-                tr = rows.item(i);
-                for(f in filters) {
-                    if (filters.hasOwnProperty(f)) {
-                        if (false === filters[f].validate(tr.children[f].innerText) ) {
-                            tr.style.display = "none"; break;
-                        } else {
-                            tr.style.display = "";
-                        }
-                    }
+function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("myTable");
+    switching = true;
+    dir = "asc";
+    while (switching) {
+        switching = false;
+        rows = table.getElementsByTagName("TR");
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName("TD")[n];
+            y = rows[i + 1].getElementsByTagName("TD")[n];
+
+            if (dir == "asc") {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch= true;
+                    break;
+                }
+            } else if (dir == "desc") {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch= true;
+                    break;
                 }
             }
-        };
-    for(n in aFilters) {
-        if (aFilters.hasOwnProperty(n)) {
-            if (aFilters[n] instanceof filterTable.Filter) {
-                filters[n] = aFilters[n];
-            } else {
-                filters[n] = new filterTable.Filter(aFilters[n]);
+        }
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+            switching = true;
+            switchcount ++;
+        } else {
+            if (switchcount == 0 && dir == "asc") {
+                dir = "desc";
+                switching = true;
             }
-            filters[n]._setAction("onchange", function () {walkThrough(rows);});
         }
     }
-};
-
-// filterTable.Filter = function (HTMLElementRef, callback, eventName) {
-//     /* If function was not called as constructor, fix it */
-//     if (!(this instanceof arguments.callee)) {
-//         return new arguments.callee(HTMLElementRef, callback, eventName);
-//     }
-//
-//     /* Argument to string */
-//     this.filters = {}.toString.call(HTMLElementRef) == "[object Array]" ? HTMLElementRef : [HTMLElementRef];
-//
-//     this.validate = function (cellValue) {
-//         for (var i = 0; i < this.filters.length; i += 1) {
-//             if ( false === this.__validate(cellValue, this.filters[i], i) ) {
-//                 return false;
-//             }
-//         }
-//     };
-//
-//     this.__validate = function (cellValue, filter, i) {
-//         if (typeof callback !== "undefined") {
-//             return callback(cellValue, this.filters, i);
-//         }
-//         /* If there are spaces, delete them */
-//         filter.value = filter.value.replace(/^\s+$/g, "");
-//         /* Input is equal to the value of cell */
-//         return !filter.value || filter.value == cellValue;
-//     };
-//
-//     this._setAction = function (anEventName, callback) {
-//         for (var i = 0; i < this.filters.length; i += 1) {
-//             this.filters[i][eventName||anEventName] = callback;
-//         }
-//     }
-// };
+}
 
 function show(container, Message) {
     container.className = 'message';
@@ -186,4 +123,22 @@ function show(container, Message) {
     msgElem.className = "output-message";
     msgElem.innerHTML = Message;
     container.appendChild(msgElem);
+}
+
+function myFunction() {
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
 }
