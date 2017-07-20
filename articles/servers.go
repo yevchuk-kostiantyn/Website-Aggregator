@@ -44,7 +44,7 @@ func getArticlesHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func patchArticlesHandler(w http.ResponseWriter, r *http.Request) {
-	var article models.RequestArticle
+	var article models.Article
 
 	err := json.NewDecoder(r.Body).Decode(&article)
 	if err != nil{

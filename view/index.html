@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Article Finder</title>
-  <link href="https://fonts.googleapis.com/css?family=Lato: 100,300,400,700|Luckiest+Guy|Oxygen:300,400" rel="stylesheet">
-  <link href="style.css" type="text/css" rel="stylesheet">
+    <title>Article Finder</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato: 100,300,400,700|Luckiest+Guy|Oxygen:300,400" rel="stylesheet">
+    <link href="style.css" type="text/css" rel="stylesheet">
     <meta charset="utf-8">
-    <title>Products</title>
     <script src = "jquery.js"></script>
     <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
     <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
@@ -13,43 +12,43 @@
 </head>
 <body>
 
- <div class="products">
+<div class="articles">
 
-<table>
-    <thead>
-      <tr>
-          <th>Search</th>
-          <th>Pick</th>
+    <table>
+        <thead>
+        <tr>
+            <th>Search</th>
+            <th>Pick</th>
 
-      </tr>
-    </thead>
-<tr>
-        <td>
-        <p>Enter URL:</p>
-        <input type="text" id="new_URL" />
-            <p>Enter interest:</p>
-            <input type="text" id="new_interest"/>
-            <button type="button" class="btn btn-success" id="updateBtn">Update</button>
-        </td>
-        <td>
-            <input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name">
-        </td>
-</tr>
-</table>
+        </tr>
+        </thead>
+        <tr>
+            <td>
+                <p>Enter URL:</p>
+                <input type="text" id="new_URL" />
+                <p>Enter interest:</p>
+                <input type="text" id="new_interest"/>
+                <button type="button" class="btn btn-success" id="updateBtn">Update</button>
+            </td>
+            <td>
+                <input type="text" id="myInput" onkeyup="searchInArticle()" placeholder="Search for text..." title="Type in a name">
+            </td>
+        </tr>
+    </table>
 
-<table id="myTable">
-    <thead id="headings">
-      <tr>
-          <th onclick="sortTable(0)" id = "Interest">Interest</th>
-          <th onclick="sortTable(1)" id = "URL">URL</th>
-          <th id = "Article">Article</th>
-      </tr>
+    <table id="articles_table">
+        <thead id="headings">
+        <tr>
+            <th onclick="sortTable(0)" id = "Interest">Interest</th>
+            <th id = "URL">URL</th>
+            <th id = "Article">Article</th>
+        </tr>
 
-    </thead>
-    <tbody id = "results">
-      <!-- this will auto-filled -->
-    </tbody>
-</table>
+        </thead>
+        <tbody id = "results">
+        <!-- this will auto-filled -->
+        </tbody>
+    </table>
 
 </div>
 

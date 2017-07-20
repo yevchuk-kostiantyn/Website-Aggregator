@@ -81,7 +81,7 @@ function setCheckBoxes(obj) {
 
 function sortTable(n) {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("myTable");
+    table = document.getElementById("articles_table");
     switching = true;
     dir = "asc";
     while (switching) {
@@ -117,19 +117,11 @@ function sortTable(n) {
     }
 }
 
-function show(container, Message) {
-    container.className = 'message';
-    var msgElem = document.createElement('span');
-    msgElem.className = "output-message";
-    msgElem.innerHTML = Message;
-    container.appendChild(msgElem);
-}
-
-function myFunction() {
+function searchInArticle() {
     var input, filter, table, tr, td, i;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
-    table = document.getElementById("myTable");
+    table = document.getElementById("articles_table");
     tr = table.getElementsByTagName("tr");
     for (i = 0; i < tr.length; i++) {
         td = tr[i].getElementsByTagName("td")[2];
