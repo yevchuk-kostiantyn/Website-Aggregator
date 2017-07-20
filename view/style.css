@@ -2,7 +2,6 @@ body {
     margin: 0;
 }
 
-/* Div */
 .articles {
     background: #EEEFF1;
     width: 90%;
@@ -10,7 +9,6 @@ body {
     padding: 20px 0px;
 }
 
-/* Table */
 table {
     margin: 20px auto;
     overflow-y: scroll;

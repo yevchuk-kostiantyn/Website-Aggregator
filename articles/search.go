@@ -1,10 +1,10 @@
 package articles
 
 import (
+	"github.com/PuerkitoBio/goquery"
+	"github.com/yevchuk-kostiantyn/WebsiteAggregator/models"
 	"log"
 	"strings"
-	"github.com/yevchuk-kostiantyn/WebsiteAggregator/models"
-	"github.com/PuerkitoBio/goquery"
 )
 
 func Search(config *models.Article) {
@@ -16,7 +16,7 @@ func Search(config *models.Article) {
 	}
 
 	article := ""
-		response.Find("p").Each(func(index int, item *goquery.Selection) {
+	response.Find("p").Each(func(index int, item *goquery.Selection) {
 		line := item.Text()
 		article += line
 	})

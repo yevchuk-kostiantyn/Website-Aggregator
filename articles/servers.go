@@ -1,13 +1,13 @@
 package articles
 
 import (
-	"time"
-	"net/http"
-	"github.com/gorilla/handlers"
-	"log"
 	"encoding/json"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/yevchuk-kostiantyn/WebsiteAggregator/models"
+	"log"
+	"net/http"
+	"time"
 )
 
 func RunDynamicServer() {
@@ -47,7 +47,7 @@ func patchArticlesHandler(w http.ResponseWriter, r *http.Request) {
 	var article models.Article
 
 	err := json.NewDecoder(r.Body).Decode(&article)
-	if err != nil{
+	if err != nil {
 		log.Println("Error Decode(): ", err)
 	}
 

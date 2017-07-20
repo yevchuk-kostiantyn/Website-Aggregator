@@ -17,8 +17,7 @@ function requestHandler(xhr) {
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
-            alert("Data have been delivered!");
-            console.log(typeof xhr.responseText)
+            alert("Data has been delivered!");
         } else if (xhr.readyState === 4 && xhr.status === 400) {
             alert(xhr.responseText);
         }
@@ -30,10 +29,9 @@ $(document).ready(function () {
         var obj = JSON.parse(data);
         console.dir(obj);
         setConfigFields(obj);
-        setCheckBoxes(obj);
     });
 
-    document.getElementById("updateBtn").onclick = function () {
+    document.getElementById("searchBtn").onclick = function () {
         sendConfiguration(
             document.getElementById('new_URL').value,
             document.getElementById('new_interest').value
@@ -45,8 +43,8 @@ function setConfigFields(obj) {
     var html ='';
     for (var e in obj) {
         html += '<tr>'
-            + '<td>' + obj[e]["interest"] + '</td>' // Interest
-            + '<td>' + obj[e]["url"] + '</td>' // URL
+            + '<td>' + obj[e]["interest"] + '</td>'
+            + '<td>' + obj[e]["url"] + '</td>'
             + '<td>' + obj[e]["text"].substr(0, 70) + " ..."
             + '<button class="opener">Full Text</button>'
             + '<div class="dialog" title='+ obj[e]["interest"]+ '>'+obj[e]["text"]+'</div>';
@@ -67,16 +65,6 @@ function setConfigFields(obj) {
         });
     });
     $('#results').html(html);
-}
-
-function setCheckBoxes(obj) {
-    var html = '';
-    for (var e in obj) {
-        var charId = "char"+obj[e]["interest"];
-        var interestValue = obj[e]["interest"];
-        html += '<input type="checkbox" id='+ charId+ 'value=' + interestValue +  '/>'+interestValue;
-    }
-    $('#checkboxes').html(html);
 }
 
 function sortTable(n) {
@@ -119,7 +107,7 @@ function sortTable(n) {
 
 function searchInArticle() {
     var input, filter, table, tr, td, i;
-    input = document.getElementById("myInput");
+    input = document.getElementById("searchArticleInput");
     filter = input.value.toUpperCase();
     table = document.getElementById("articles_table");
     tr = table.getElementsByTagName("tr");

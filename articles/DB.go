@@ -1,9 +1,9 @@
 package articles
 
 import (
-	"menteslibres.net/gosexy/redis"
 	"github.com/yevchuk-kostiantyn/WebsiteAggregator/models"
 	"log"
+	"menteslibres.net/gosexy/redis"
 	"strings"
 )
 

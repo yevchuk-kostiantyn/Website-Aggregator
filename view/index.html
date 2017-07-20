@@ -5,21 +5,18 @@
     <link href="https://fonts.googleapis.com/css?family=Lato: 100,300,400,700|Luckiest+Guy|Oxygen:300,400" rel="stylesheet">
     <link href="style.css" type="text/css" rel="stylesheet">
     <meta charset="utf-8">
-    <script src = "jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="jquery-ui-1.12.1.custom/jquery-ui.css">
     <script src="jquery-ui-1.12.1.custom/jquery-ui.js"></script>
     <script src = "Main.js" async></script>
 </head>
 <body>
-
 <div class="articles">
-
     <table>
         <thead>
         <tr>
             <th>Search</th>
             <th>Pick</th>
-
         </tr>
         </thead>
         <tr>
@@ -28,14 +25,14 @@
                 <input type="text" id="new_URL" />
                 <p>Enter interest:</p>
                 <input type="text" id="new_interest"/>
-                <button type="button" class="btn btn-success" id="updateBtn">Update</button>
+                <button type="button" id="searchBtn">Search</button>
             </td>
             <td>
-                <input type="text" id="myInput" onkeyup="searchInArticle()" placeholder="Search for text..." title="Type in a name">
+                <input type="text" id="searchArticleInput" onkeyup="searchInArticle()"
+                       placeholder="Search for text...">
             </td>
         </tr>
     </table>
-
     <table id="articles_table">
         <thead id="headings">
         <tr>
@@ -43,14 +40,11 @@
             <th id = "URL">URL</th>
             <th id = "Article">Article</th>
         </tr>
-
         </thead>
         <tbody id = "results">
         <!-- this will auto-filled -->
         </tbody>
     </table>
-
 </div>
-
 </body>
 </html>
