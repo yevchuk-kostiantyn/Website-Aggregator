@@ -21,13 +21,13 @@ func RunDynamicServer() {
 
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         "0.0.0.0" + ":" + "8100",
+		Addr:         "localhost" + ":" + "8100",
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
 
 	// CORS provides Cross-Origin Resource Sharing middleware
-	http.ListenAndServe("0.0.0.0"+":"+"8100", handlers.CORS()(r))
+	http.ListenAndServe("localhost"+":"+"8100", handlers.CORS()(r))
 
 	go log.Fatal(srv.ListenAndServe())
 }

@@ -51,40 +51,7 @@
     </tbody>
 </table>
 
-<script src="filters.js"></script>
-<script>
-  filterTable( document.getElementById("results"), {
-
-        /* Search filter */
-            0: document.getElementById("text"),
-
-            /* Check-box filter */
-            1: new filterTable.Filter([ /* Filter Elements */
-                    document.getElementById("charA"),
-                    document.getElementById("charB"),
-                    document.getElementById("charC"),
-                    document.getElementById("charD"),
-                    document.getElementById("charE")
-                ],
-                /* Validation function */
-                function (value, filters, i) {
-                    /* If checkbox is not selected */
-                    if (false === filters[i].checked) return true;
-                    /* Check all values under specific value of selected checkbox */
-                    return filters[0].checked && filters[0].value === value ||
-                            filters[1].checked && filters[1].value === value ||
-                            filters[2].checked && filters[2].value === value ||
-                            filters[3].checked && filters[3].value === value ||
-                            filters[4].checked && filters[4].value === value;
-                }
-            ),
-        }
-    );
-</script>
-  <div class="products">
-  </form>
 </div>
-</div>
- </div>
+
 </body>
 </html>
